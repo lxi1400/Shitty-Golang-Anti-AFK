@@ -22,44 +22,17 @@ func afkchecked(author, content string) () {
 	color.Yellow(fmt.Sprintf("[%s] Replied to AFK Check from: %s\nMessage: %s", currentTime.Format("3:4 PM"), author, content))
 }
 
-func clear() {
-	fmt.Print("\033[H\033[2J")
 
-}
 
 
 func randomresponse() string {
 	rand.Seed(time.Now().Unix())
-    return responsemessages[rand.Intn(len(responsemessages))]
+    return responses[rand.Intn(len(responses))]
 }
   
-func setup() {
-	title.SetTitle("Auto AFK | Login")
-	responses := []string {
-		"im here",
-		"im here son", 
-		"what do you want",
-		"what",
-	}
-	
-	afktext := []string {
-		"afk check",
-		"are you afk",
-		"are you there",
-		"afk chck",
-		"afk checrk",
-		"afk chrck",
-	
-	}
-	for _, text := range afktext {
-		afktexts = append(afktexts, text)
-	}
-	for _, text := range responses {
-		responsemessages = append(responsemessages, text)
-	}
-}
 
 func banner() {
+	fmt.Print("\033[H\033[2J")
 	color.Red(` 
 		    :::     :::    ::: ::::::::::: ::::::::           :::     :::::::::: :::    ::: 
 		  :+: :+:   :+:    :+:     :+:    :+:    :+:        :+: :+:   :+:        :+:   :+:  
@@ -74,16 +47,13 @@ func banner() {
 
 }
 func main() {
-	setup()
-	clear()
+	title.SetTitle("Auto AFK | Login")
 	banner() 
 	fmt.Print("~$ Insert Token > ")
 	fmt.Scan(&token)
-	clear()
 	banner()
 	fmt.Print("~$ Insert Channel ID to read/send messages to > ")
 	fmt.Scan(&channelid)
-	clear()
 	banner()
 	selfbot, err := discordgo.New(token)
 	if err != nil {
@@ -118,7 +88,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.ChannelID != channelid {
 		return
 	}
-	for _, text := range afktexts {
+	for _, text := range afktext {
 		if strings.Contains(strings.ToLower(m.Content), text) {
 			if len(m.Mentions) == 0 {
 				return
@@ -139,6 +109,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 var (
 	token string
 	channelid string
-	responsemessages []string
-	afktexts []string
+	responses =  []string{"im here", "im here son", "what do you want", "what",}
+	afktext = []string{"afk check", "are you afk", "are you there", "afk chck", "afk checrk", "afk chrck",}
 )
